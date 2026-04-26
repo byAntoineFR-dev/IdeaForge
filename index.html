@@ -1,71 +1,85 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-  <title>Générateur d'idées</title>
-
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e1e2f, #3a3a6a);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .container {
-      background: rgba(0,0,0,0.3);
-      padding: 40px;
-      border-radius: 15px;
-    }
-
-    #idea {
-      font-size: 20px;
-      margin: 20px 0;
-    }
-
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      background: #ff6b6b;
-      color: white;
-      cursor: pointer;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Génère des idées de jeux uniques et variées. Forge tes idées, crée ton jeu.">
+  <title>IdeaForge — Générateur d'idées de jeux</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<div class="container">
-  <h1>🎮 Générateur</h1>
-  <div id="idea">Clique !</div>
-  <button onclick="generateIdea()">Générer</button>
-  <button onclick="copyIdea()">Copier</button>
+<!-- Particle layer -->
+<div class="particles" id="particles" aria-hidden="true"></div>
+
+<!-- App wrapper -->
+<div class="app">
+
+  <!-- ── HEADER ─────────────────────────────── -->
+  <header class="header">
+    <div class="logo">
+      <span class="logo-title">IdeaForge</span>
+      <span class="logo-slogan">Forge tes idées, crée ton jeu.</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn-icon" id="btn-theme" title="Changer le thème" aria-label="Basculer thème">🌙</button>
+    </div>
+  </header>
+
+  <!-- ── CATEGORIES ────────────────────────── -->
+  <div class="section-label">Choisir une catégorie</div>
+  <div class="categories" id="categories-grid" role="group" aria-label="Catégories de jeux">
+    <!-- Injected by JS -->
+  </div>
+
+  <!-- ── GENERATE BUTTON ───────────────────── -->
+  <div class="generate-zone">
+    <button class="btn-generate" id="btn-generate" aria-label="Générer une idée">
+      <span class="btn-inner">
+        <span class="spark">⚡</span>
+        Générer une idée
+      </span>
+    </button>
+  </div>
+
+  <!-- ── IDEA CARD ──────────────────────────── -->
+  <div class="idea-card" id="idea-card" role="region" aria-label="Idée générée" aria-live="polite">
+    <div id="idea-placeholder" class="idea-placeholder">
+      <span class="idea-placeholder-icon">🎲</span>
+      <p>Choisis une catégorie<br>et clique sur Générer !</p>
+      <small style="color:var(--text3); font-size:11px;">ou appuie sur Espace</small>
+    </div>
+    <div id="idea-content" class="idea-content">
+      <!-- Injected by JS -->
+    </div>
+    <div id="action-buttons" style="display:flex; gap:10px; flex-wrap:wrap;">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- ── SAVED IDEAS ────────────────────────── -->
+  <section class="saved-section" aria-label="Idées sauvegardées">
+    <hr class="divider">
+    <div class="saved-header">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="section-label" style="margin-bottom:0">Mes idées sauvegardées</span>
+        <span class="saved-count" id="saved-count">0</span>
+      </div>
+      <button class="btn-clear" id="btn-clear-saved" aria-label="Tout effacer">Tout effacer</button>
+    </div>
+    <div class="saved-list" id="saved-list" role="list">
+      <!-- Injected by JS -->
+    </div>
+  </section>
+
 </div>
 
-<script>
-function generateIdea() {
-  const idea = "Un jeu de gestion avec des zombies 🔥";
-  const element = document.getElementById("idea");
+<!-- Toast container -->
+<div class="toast-container" id="toast-container" aria-live="assertive" aria-atomic="true"></div>
 
-  element.style.opacity = 0;
-
-  setTimeout(() => {
-    element.textContent = idea;
-    element.style.opacity = 1;
-  }, 200);
-}
-function copyIdea() {
-  const text = document.getElementById("idea").textContent;
-  navigator.clipboard.writeText(text);
-  alert("Copié !");
-}
-</script>
+<!-- Scripts -->
+<script src="data.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
