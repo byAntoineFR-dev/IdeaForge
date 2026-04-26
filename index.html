@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Générateur d'idées</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #3a3a6a);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(0,0,0,0.3);
+      padding: 40px;
+      border-radius: 15px;
+    }
+
+    #idea {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #ff6b6b;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🎮 Générateur</h1>
+  <div id="idea">Clique !</div>
+  <button onclick="generateIdea()">Générer</button>
+  <button onclick="copyIdea()">Copier</button>
+</div>
+
+<script>
+function generateIdea() {
+  const idea = "Un jeu de gestion avec des zombies 🔥";
+  const element = document.getElementById("idea");
+
+  element.style.opacity = 0;
+
+  setTimeout(() => {
+    element.textContent = idea;
+    element.style.opacity = 1;
+  }, 200);
+}
+function copyIdea() {
+  const text = document.getElementById("idea").textContent;
+  navigator.clipboard.writeText(text);
+  alert("Copié !");
+}
+</script>
+
+</body>
+</html>
