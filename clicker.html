@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Creuset — IdeaForge Clicker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="clicker.css">
+</head>
+<body>
+
+<div class="particles" id="particles" aria-hidden="true"></div>
+
+<div class="clicker-app">
+
+  <!-- ── HEADER ─────────────────────────────── -->
+  <header class="clicker-header">
+    <div class="header-left">
+      <a href="index.html" class="back-btn">← Accueil</a>
+      <span class="clicker-title">🔥 Le Creuset</span>
+    </div>
+    <div class="header-stats">
+      <div class="stat-pill sparks" id="stat-sparks">⚡ 0</div>
+      <div class="stat-pill prestige" id="stat-prestige">✦ Prestige 0</div>
+    </div>
+    <button class="btn-icon" id="btn-theme" aria-label="Thème">☀️</button>
+  </header>
+
+  <!-- ── MAIN COLUMN ───────────────────────── -->
+  <main class="main-col">
+
+    <!-- FORGE / ANVIL -->
+    <section class="forge-zone">
+      <div class="forge-level-badge" id="forge-level">Niveau 1 — Forgeron</div>
+
+      <button class="anvil-btn" id="anvil-btn" aria-label="Forger un Spark">
+        <span class="anvil-emoji">⚒️</span>
+        <div class="anvil-glow"></div>
+      </button>
+
+      <div style="text-align:center">
+        <div class="spark-per-click" id="spark-per-click">+1</div>
+        <div class="spark-label">Sparks par frappe</div>
+      </div>
+
+      <!-- XP BAR -->
+      <div class="xp-section">
+        <div class="xp-header">
+          <span class="xp-label">Expérience</span>
+          <span class="xp-numbers"><span id="xp-cur">0</span> / <span id="xp-max">100</span></span>
+        </div>
+        <div class="xp-bar-track">
+          <div class="xp-bar-fill" id="xp-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="forge-hint">⚡ <span id="sps-display">0 sparks/s</span> en automatique · Appuie sur Espace</div>
+    </section>
+
+    <!-- AUTO-GENERATORS -->
+    <section class="auto-section">
+      <div class="section-title">Forges automatiques</div>
+      <div class="auto-list" id="auto-list">
+        <!-- injected by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── SIDE COLUMN ────────────────────────── -->
+  <aside class="side-col">
+
+    <!-- UPGRADES -->
+    <div class="upgrades-panel">
+      <div class="section-title">Améliorations</div>
+      <div class="upgrade-list" id="upgrade-list">
+        <!-- injected by JS -->
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="achievements-panel">
+      <div class="section-title">Succès</div>
+      <div class="achievement-grid" id="achievement-grid">
+        <!-- injected by JS -->
+      </div>
+    </div>
+
+    <!-- PRESTIGE -->
+    <div class="prestige-panel" id="prestige-panel">
+      <div class="prestige-title">⭐ Prestige</div>
+      <div class="prestige-desc" id="prestige-need">Nécessite 50 000 Sparks au total</div>
+      <div class="prestige-reward" id="prestige-next-mult">→ Multiplicateur ×2</div>
+      <button class="btn-prestige" id="btn-prestige" disabled>
+        Ascension ✦
+      </button>
+    </div>
+
+  </aside>
+
+</div>
+
+<div class="toast-container" id="toast-container"></div>
+
+<script src="clicker.js"></script>
+
+</body>
+</html>

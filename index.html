@@ -3,83 +3,236 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Génère des idées de jeux uniques et variées. Forge tes idées, crée ton jeu.">
-  <title>IdeaForge — Générateur d'idées de jeux</title>
+  <title>IdeaForge — Forge tes idées, crée ton jeu.</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .home-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .home-logo {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .home-logo .logo-title {
+      font-size: clamp(38px, 8vw, 64px);
+      letter-spacing: -2px;
+    }
+
+    .home-logo .logo-slogan {
+      font-size: 15px;
+      margin-top: 6px;
+      display: block;
+    }
+
+    .home-subtitle {
+      color: var(--text2);
+      font-size: 15px;
+      text-align: center;
+      max-width: 420px;
+      line-height: 1.6;
+      margin-bottom: 52px;
+    }
+
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .mode-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mode-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      border-radius: inherit;
+    }
+
+    .mode-card.generator::before {
+      background: linear-gradient(135deg, rgba(124,106,255,0.08), rgba(255,107,157,0.08));
+    }
+
+    .mode-card.clicker::before {
+      background: linear-gradient(135deg, rgba(255,107,29,0.08), rgba(255,200,50,0.08));
+    }
+
+    .mode-card:hover::before { opacity: 1; }
+
+    .mode-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: var(--shadow);
+    }
+
+    .mode-card.generator:hover {
+      border-color: var(--accent);
+      box-shadow: 0 12px 48px rgba(124,106,255,0.2);
+    }
+
+    .mode-card.clicker:hover {
+      border-color: #ff6b1d;
+      box-shadow: 0 12px 48px rgba(255,107,29,0.2);
+    }
+
+    .mode-icon {
+      font-size: 48px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .mode-card.clicker .mode-icon {
+      animation-delay: -1.5s;
+    }
+
+    .mode-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+    }
+
+    .mode-desc {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.5;
+    }
+
+    .mode-badge {
+      font-family: 'Syne', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      border: 1px solid;
+    }
+
+    .mode-card.generator .mode-badge {
+      background: rgba(124,106,255,0.1);
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .mode-card.clicker .mode-badge {
+      background: rgba(255,107,29,0.1);
+      color: #ff6b1d;
+      border-color: #ff6b1d;
+    }
+
+    .home-footer {
+      margin-top: 48px;
+      color: var(--text3);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .btn-icon-home {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 10;
+    }
+
+    @media (max-width: 480px) {
+      .mode-grid { grid-template-columns: 1fr; max-width: 320px; }
+      .mode-card { padding: 24px 20px; flex-direction: row; text-align: left; gap: 16px; }
+      .mode-icon { font-size: 36px; }
+    }
+  </style>
 </head>
 <body>
-
-<!-- Particle layer -->
 <div class="particles" id="particles" aria-hidden="true"></div>
 
-<!-- App wrapper -->
-<div class="app">
+<button class="btn-icon btn-icon-home" id="btn-theme" title="Changer le thème" aria-label="Thème">🌙</button>
 
-  <!-- ── HEADER ─────────────────────────────── -->
-  <header class="header">
-    <div class="logo">
-      <span class="logo-title">IdeaForge</span>
-      <span class="logo-slogan">Forge tes idées, crée ton jeu.</span>
-    </div>
-    <div class="header-actions">
-      <button class="btn-icon" id="btn-theme" title="Changer le thème" aria-label="Basculer thème">🌙</button>
-    </div>
-  </header>
-
-  <!-- ── CATEGORIES ────────────────────────── -->
-  <div class="section-label">Choisir une catégorie</div>
-  <div class="categories" id="categories-grid" role="group" aria-label="Catégories de jeux">
-    <!-- Injected by JS -->
+<div class="home-wrap">
+  <div class="home-logo logo">
+    <span class="logo-title">IdeaForge</span>
+    <span class="logo-slogan">Forge tes idées, crée ton jeu.</span>
   </div>
 
-  <!-- ── GENERATE BUTTON ───────────────────── -->
-  <div class="generate-zone">
-    <button class="btn-generate" id="btn-generate" aria-label="Générer une idée">
-      <span class="btn-inner">
-        <span class="spark">⚡</span>
-        Générer une idée
-      </span>
-    </button>
-  </div>
+  <p class="home-subtitle">Génère des concepts de jeux uniques ou forge ta créativité dans le Creuset — le mini-jeu clicker intégré.</p>
 
-  <!-- ── IDEA CARD ──────────────────────────── -->
-  <div class="idea-card" id="idea-card" role="region" aria-label="Idée générée" aria-live="polite">
-    <div id="idea-placeholder" class="idea-placeholder">
-      <span class="idea-placeholder-icon">🎲</span>
-      <p>Choisis une catégorie<br>et clique sur Générer !</p>
-      <small style="color:var(--text3); font-size:11px;">ou appuie sur Espace</small>
-    </div>
-    <div id="idea-content" class="idea-content">
-      <!-- Injected by JS -->
-    </div>
-    <div id="action-buttons" style="display:flex; gap:10px; flex-wrap:wrap;">
-      <!-- Injected by JS -->
-    </div>
-  </div>
-
-  <!-- ── SAVED IDEAS ────────────────────────── -->
-  <section class="saved-section" aria-label="Idées sauvegardées">
-    <hr class="divider">
-    <div class="saved-header">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span class="section-label" style="margin-bottom:0">Mes idées sauvegardées</span>
-        <span class="saved-count" id="saved-count">0</span>
+  <div class="mode-grid">
+    <a href="home.html" class="mode-card generator">
+      <span class="mode-icon">✨</span>
+      <div>
+        <div class="mode-title">Générateur</div>
+        <div class="mode-desc">Des centaines de combinaisons d'idées de jeux. Sauvegarde, like, partage.</div>
       </div>
-      <button class="btn-clear" id="btn-clear-saved" aria-label="Tout effacer">Tout effacer</button>
-    </div>
-    <div class="saved-list" id="saved-list" role="list">
-      <!-- Injected by JS -->
-    </div>
-  </section>
+      <span class="mode-badge">Créer</span>
+    </a>
 
+    <a href="clicker.html" class="mode-card clicker">
+      <span class="mode-icon">🔨</span>
+      <div>
+        <div class="mode-title">Le Creuset</div>
+        <div class="mode-desc">Forge des Sparks, monte en niveau, débloque des secrets. Prestige & succès.</div>
+      </div>
+      <span class="mode-badge">Jouer</span>
+    </a>
+  </div>
+
+  <div class="home-footer">Appuie sur Espace pour générer • Sauvegarde dans ton navigateur</div>
 </div>
 
-<!-- Toast container -->
-<div class="toast-container" id="toast-container" aria-live="assertive" aria-atomic="true"></div>
+<div class="toast-container" id="toast-container"></div>
 
-<!-- Scripts -->
-<script src="data.js"></script>
-<script src="app.js"></script>
-
+<script>
+(function() {
+  function spawnParticles() {
+    const c = document.getElementById('particles');
+    for (let i = 0; i < 18; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${4+Math.random()*6}s;--delay:${Math.random()*8}s;opacity:0`;
+      c.appendChild(p);
+    }
+  }
+  function applyTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    const btn = document.getElementById('btn-theme');
+    if (btn) btn.textContent = t === 'dark' ? '☀️' : '🌙';
+  }
+  const saved = localStorage.getItem('ideaforge_theme') || 'dark';
+  applyTheme(saved);
+  document.getElementById('btn-theme').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('ideaforge_theme', next);
+    applyTheme(next);
+  });
+  spawnParticles();
+})();
+</script>
 </body>
 </html>
